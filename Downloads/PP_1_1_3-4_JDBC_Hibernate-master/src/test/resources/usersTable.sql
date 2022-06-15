@@ -1,0 +1,1 @@
+select * from pp1.usersTable;
