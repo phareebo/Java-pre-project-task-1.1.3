@@ -11,7 +11,7 @@ public class Util {
 
     private static Connection connection;
 
-    public Connection getConnection() {
+    public static Connection getConnection() {
         try {
             connection = DriverManager.getConnection(URL, USER, PASSWORD);
         } catch (SQLException e) {

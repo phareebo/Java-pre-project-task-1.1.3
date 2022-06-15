@@ -8,8 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoJDBCImpl implements UserDao {
-    Util util = new Util();
-    Connection connection = util.getConnection();
+    Connection connection = Util.getConnection();
 
     public UserDaoJDBCImpl() {
 
@@ -24,8 +23,8 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void saveUser(String name, String lastName, byte age) {
-        try {
-            PreparedStatement prepStat = connection.prepareStatement("INSERT INTO User VALUES (?, ?, ?)");
+        try (PreparedStatement prepStat =
+                     connection.prepareStatement("INSERT INTO usersTable(name, last_name, age) VALUES (?, ?, ?);")) {
             prepStat.setString(1, name);
             prepStat.setString(2, lastName);
             prepStat.setByte(3, age);
@@ -44,9 +43,8 @@ public class UserDaoJDBCImpl implements UserDao {
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
 
-        try {
-            Statement statement = connection.createStatement();
-            String SQL = "SELECT * FROM pp1 (id, name, lastName, age)";
+        try (Statement statement = connection.createStatement()) {
+            String SQL = "SELECT * FROM pp1;";
             ResultSet resultSet = statement.executeQuery(SQL);
 
             while (resultSet.next()) {
@@ -66,9 +64,8 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void cleanUsersTable() {
-        try {
-            Statement statement = connection.createStatement();
-            String SQL = "TRUNCATE TABLE pp1";
+        try (Statement statement = connection.createStatement()) {
+            String SQL = "DELETE FROM pp1;";
             ResultSet resultSet = statement.executeQuery(SQL);
 
         } catch (SQLException e) {
