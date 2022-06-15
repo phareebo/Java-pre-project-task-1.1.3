@@ -15,11 +15,24 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void createUsersTable() {
+        try (Statement statement = connection.createStatement()) {
+            String SQL = "CREATE  TABLE IF NOT EXISTS users(id INT AUTO_INCREMENT, + " +
+                    "name VARCHAR(50), last_name VARCHAR (50), age INT not NULL, PRIMARY KEY (id));";
+            ResultSet resultSet = statement.executeQuery(SQL);
 
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void dropUsersTable() {
+        try (Statement statement = connection.createStatement()) {
+            String SQL = "DROP TABLE IF EXISTS users;";
+            ResultSet resultSet = statement.executeQuery(SQL);
 
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void saveUser(String name, String lastName, byte age) {
