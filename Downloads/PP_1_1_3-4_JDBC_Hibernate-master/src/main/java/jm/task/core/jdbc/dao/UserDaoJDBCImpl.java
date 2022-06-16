@@ -52,7 +52,12 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void removeUserById(long id) {
-
+        try (PreparedStatement prepStat = connection.prepareStatement("DELETE FROM usersTable WHERE ID = (?)")) {
+            prepStat.setLong(1, id);
+            prepStat.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public List<User> getAllUsers() {
